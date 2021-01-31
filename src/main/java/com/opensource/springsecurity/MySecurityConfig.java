@@ -30,7 +30,11 @@ public class MySecurityConfig extends WebSecurityConfigurerAdapter {
 		  InMemoryUserDetailsManager(); UserDetails user =
 		  User.withUsername("tom").password(passwordEncoder.encode("pass")).authorities
 		  ("read").build(); userDetailsService.createUser(user);
-		  auth.userDetailsService(userDetailsService).passwordEncoder(passwordEncoder);*/
+		  auth.userDetailsService(userDetailsService).passwordEncoder(passwordEncoder);  //you can remove the passcode encoder as we have autowired Bcrypt encoder
+		  
+		  
+		  
+		  */
 		 
 		//Using Custom AuthorizationProvider
 		auth.authenticationProvider(authenticationProvider);
