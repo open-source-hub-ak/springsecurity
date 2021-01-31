@@ -14,41 +14,43 @@ import org.springframework.security.provisioning.InMemoryUserDetailsManager;
 
 @Configuration
 public class MySecurityConfig extends WebSecurityConfigurerAdapter {
-	
+
 	@Autowired
 	private BCryptPasswordEncoder passwordEncoder;
-	
+
 	@Autowired
 	private AuthenticationProvider authenticationProvider;
-	
+
 	@Override
 	protected void configure(AuthenticationManagerBuilder auth) throws Exception {
 
-		//custom user details service and password encoder
-		
-/*		  InMemoryUserDetailsManager userDetailsService = new
-		  InMemoryUserDetailsManager(); UserDetails user =
-		  User.withUsername("tom").password(passwordEncoder.encode("pass")).authorities
-		  ("read").build(); userDetailsService.createUser(user);
-		  auth.userDetailsService(userDetailsService).passwordEncoder(passwordEncoder);  //you can remove the passcode encoder as we have autowired Bcrypt encoder
-		  
-		  
-		  
-		  */
-		 
-		//Using Custom AuthorizationProvider
+		// custom user details service and password encoder
+
+		/*
+		 * InMemoryUserDetailsManager userDetailsService = new
+		 * InMemoryUserDetailsManager(); UserDetails user =
+		 * User.withUsername("tom").password(passwordEncoder.encode("pass")).authorities
+		 * ("read").build(); userDetailsService.createUser(user);
+		 * auth.userDetailsService(userDetailsService).passwordEncoder(passwordEncoder);
+		 * //you can remove the passcode encoder as we have autowired Bcrypt encoder
+		 * 
+		 * 
+		 * 
+		 */
+
+		// Using Custom AuthorizationProvider
 		auth.authenticationProvider(authenticationProvider);
-		 
+
 	}
 
 	@Override
 	protected void configure(HttpSecurity http) throws Exception {
 		http.httpBasic();
-		http.authorizeRequests()
-		.antMatchers("/hello").authenticated() // hello will be authenticated
-		.anyRequest().denyAll(); //this will make sure other than hello all the other request need to be denied
+		http.authorizeRequests().antMatchers("/hello").authenticated() // hello will be authenticated
+				.anyRequest().denyAll(); // this will make sure other than hello all the other request need to be denied
+											// else /bye will be getting access if not used this
 	}
-	
+
 	@Bean
 	public BCryptPasswordEncoder passwordEncoder() {
 		return new BCryptPasswordEncoder();
